@@ -1,4 +1,4 @@
-# ficimia
+# app
 
 ## Project setup
 ```
