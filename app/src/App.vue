@@ -32,7 +32,7 @@ export default {
           "cmd": cmd[0],
           "usr": this.username,
           "params": {
-              "amount": parseFloat(cmd[1])
+              "amount": parseInt(cmd[1])
           }
         }
       } else if(cmd[0] == "QUOTE" || cmd[0] == "CANCEL_SET_BUY" || cmd[0] == "CANCEL_SET_SELL"){
