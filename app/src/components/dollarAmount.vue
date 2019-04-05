@@ -1,5 +1,5 @@
 <template>
-  <v-flex grow pl-1 pr-1>
+  <v-flex :class="size" mx-1>
     <v-text-field 
         v-model="dollar"
         :label="custLabel ? custLabel : 'Dollar Amount'" 
@@ -17,6 +17,9 @@
 <script>
 export default {
   name: "dollarAmount",
+  props: {
+    size: String,
+  },
   data() {
     return {
       dollar: '',

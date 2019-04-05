@@ -1,6 +1,6 @@
 <template>
-  <v-container align-content-start id="home">
-    <v-layout pb-3 mb-3>
+  <v-container align-content-start class="home">
+    <v-layout mb-4 mt-5 ml-1>
       <h1>Welcome {{username}}, what would you like to do?</h1>
     </v-layout>
     <v-layout align-self-start row class="option">
@@ -24,7 +24,7 @@
       ></dollarAmount>
       <medButton
         msg="BUY TRIGGER"
-        size="sm3"
+        size="xs3 md2"
         color="#2ecc71"
         :block="true"
         :disabled="(amount['SET_BUY_AMOUNT'] == 0 || isNaN(amount['SET_BUY_AMOUNT']) || isNaN(amount['SET_BUY_TRIGGER']) || amount['SET_BUY_TRIGGER'] == 0 || stock['SET_BUY_AMOUNT'].length != 3)"
@@ -52,15 +52,15 @@
       ></dollarAmount>
       <medButton
         msg="SELL TRIGGER"
-        size="sm3"
+        size="xs3 md2"
         color="#2ecc71"
         :block="true"
         :disabled="(amount['SET_SELL_AMOUNT'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || amount['SET_SELL_TRIGGER'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || stock['SET_SELL_AMOUNT'].length != 3)"
         v-on:clicked="execute('SET_SELL_AMOUNT')"
       ></medButton>
     </v-layout>
-    <v-layout class="option">
-      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
+    <v-layout row class="option">
+      <medButton size="xs12" msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
     </v-layout>
   </v-container>
 </template>
@@ -196,12 +196,24 @@ export default {
 </script>
 
 <style>
-#home {
-  padding: 10%;
+@media only screen and (min-width: 1264px) {
+  .home {
+    max-width: 1264px;
+  }
 }
 
 h1 {
   color: #95afc0;
   font-family: "Courier New", Courier, monospace;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-flex shrink xs2>
+  <v-flex xs3 md2 mx-1>
     <v-text-field 
         v-model="stockSym"
         label="Stock Symbol" 

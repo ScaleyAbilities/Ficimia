@@ -1,16 +1,18 @@
 <template>
-  <v-container align-content-space-between justify-center id="login">
-    <v-layout align-baseline row justify-center class="option">
-      <v-flex grow pa-1>
+  <v-container align-content-start justify-center class="login">
+    <v-layout row justify-center class="option">
+      <v-flex grow md-1 mx-1>
         <v-text-field
           label="Username"
-          box
           :dark="true"
+          color="white"
           :clearable="true"
           v-model="username"
         ></v-text-field>
       </v-flex>
-      <medButton msg="Login" color="#2ecc71" :disabled="(username == null)" :block="false" :to="'home/'+username"></medButton>
+      <v-flex shrink>
+        <medButton msg="Login" color="#2ecc71" :disabled="(username == null)" :block="false" :to="'home/'+username"></medButton>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -33,9 +35,8 @@ export default {
 </script>
 
 <style>
-#login {
-  padding: 30%;
-  padding-top: 20%;
-  width: 100vw;
+.login {
+  max-width: 500px;
+  padding-top: 30vh;
 }
 </style>
