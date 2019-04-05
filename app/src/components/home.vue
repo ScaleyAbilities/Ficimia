@@ -128,7 +128,7 @@
       ></confirm-dialog>
     </v-layout>
 
-    <v-layout align-self-start row class="option" id="DUMPLOG">
+    <v-layout align-self-start pt2 row class="option" id="DUMPLOG">
       <medButton
         msg="Generate Dumplog"
         color="#7ed6df"
@@ -146,7 +146,7 @@
         msg="User Summary"
         color="#7ed6df"
         :block="true"
-        v-on:clicked="execute('DISPLAY_USER_SUMMARY') & (summary = true)"
+        v-on:clicked="execute('DISPLAY_SUMMARY') & (summary = true)"
       ></medButton>
       <confirm-dialog
         :dialog="summary"
@@ -157,8 +157,8 @@
       ></confirm-dialog>
     </v-layout>
 
-    <v-layout align-self-start class="option" id="LOGOUT">
-      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
+    <v-layout align-self-start pt2 class="option" id="LOGOUT">
+      <medButton size="pa2" msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
     </v-layout>
   </v-container>
 </template>
