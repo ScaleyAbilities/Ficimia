@@ -150,6 +150,7 @@
       ></medButton>
       <confirm-dialog
         :dialog="summary"
+        :cancel="false"
         v-on:confirm="summary = false"
         v-on:cancel="summary = false"
         command="User Summary"
@@ -311,7 +312,11 @@ export default {
           "Content-Type": "application/json"
         }
       })
-        .then(r => r.json().then(data => ({ status: r.status, body: data })))
+        .then(r => r.json().then(data => ({ 
+          status: r.status, 
+          body: data 
+        
+        })))
         .then(obj => console.log(obj))
         .catch(error => console.error("Error:", error));
     }
