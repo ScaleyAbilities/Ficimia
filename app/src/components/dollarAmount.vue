@@ -8,6 +8,7 @@
       min="0"
       outline
       :dark="true"
+      color="white"
       type="number"
       :clearable="true"
       @input="$emit('change', dollar)"
