@@ -5,6 +5,7 @@
       label="Stock Symbol"
       outline
       :dark="true"
+      color="white"
       mask="AAA"
       placeholder="SUC"
       :clearable="true"
