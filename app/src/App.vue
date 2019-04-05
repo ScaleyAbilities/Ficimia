@@ -1,26 +1,45 @@
 <template>
   <div id="app">
-    <div class="heading">SCALEY ABILITIES</div>
+    <marquee-text :repeat="30" :duration="3">
+      <div class="heading">~ SCALEY ABILITIES ~</div>
+    </marquee-text>
     <router-view/>
   </div>
 </template>
 
 <script>
+import MarqueeText from 'vue-marquee-text-component'
 export default {
-  name: "app"
+  name: "app",
+  components: {
+    MarqueeText,
+  }
 };
 </script>
 
 <style>
 #app {
-  background-image: linear-gradient(to bottom, #2980b9, #ecf0f1);
   height: 100vh;
   font-family: Roboto, Arial, Helvetica, sans-serif;
-  /* put some fancy css here */
+  position: relative;
+  background-color: black;
+}
+
+#app::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("assets/snake.jpg");
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  opacity: 0.2;
 }
 
 .heading {
   display: flex;
+  color: aliceblue;
   justify-content: center;
   font-family: fantasy;
   font-size: 4em;

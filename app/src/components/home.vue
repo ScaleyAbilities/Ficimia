@@ -1,45 +1,78 @@
 <template>
-  <div id="home">
-    <h1>Enter Command</h1>
-    <input v-model="command" placeholder="Enter command">
-    <br>
-    <medButton msg="Execute command" color="#2ecc71" v-on:click="execute()"></medButton>
-  </div>
+  <v-container align-content-start id="home">
+    <v-layout pb-6>
+      <h1> Welcome {{username}}, what would you like to do? </h1>
+    </v-layout>
+    <v-layout align-self-start row class="option">
+      <stockSymbol></stockSymbol>
+      <dollarAmount></dollarAmount>
+      <medButton msg="BUY" size="sm3" color="#2ecc71" :block="true" v-on:clicked="counter += 1"></medButton>
+    </v-layout>
+    <v-layout align-self-start row class="option">
+      <stockSymbol></stockSymbol>
+      <dollarAmount></dollarAmount>
+      <medButton msg="BUY TRIGGER" size="sm3" color="#2ecc71" :block="true" v-on:click="execute()"></medButton>
+    </v-layout>
+    <v-layout align-self-start row class="option">
+      <stockSymbol></stockSymbol>
+      <stockAmount></stockAmount>
+      <medButton msg="SELL" size="sm3" color="#2ecc71" :block="true" v-on:click="execute()"></medButton>
+    </v-layout>
+    <v-layout align-self-start row class="option">
+      <stockSymbol></stockSymbol>
+      <stockAmount></stockAmount>
+      <medButton msg="SELL TRIGGER" size="sm3" color="#2ecc71" :block="true" v-on:click="execute()"></medButton>
+    </v-layout>
+    <v-layout class="option">
+      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true" v-on:click="execute()"></medButton>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 import medButton from "./medButton.vue";
+import stockSymbol from "./stockSymbol.vue";
+import dollarAmount from "./dollarAmount.vue";
+import stockAmount from "./stockAmount.vue";
 export default {
   name: "home",
   url: "http://127.0.0.1:80/api/command",
   components: {
-    medButton
+    medButton,
+    dollarAmount,
+    stockSymbol,
+    stockAmount
   },
 
   data() {
     return {
       hide: false,
-      username: "",
-      command: ""
+      counter: 0,
     };
   },
 
+  computed: {
+    username: function() {
+      return this.$route.params.username;
+      },
+  },
+
   methods: {
-    execute() {
-      var cmd = this.command.toUpperCase().split(" ");
+    execute(cmd) {
+      var command = cmd;
       var data;
       if (
-        cmd[0] == "COMMIT_BUY" ||
-        cmd[0] == "CANCEL_BUY" ||
-        cmd[0] == "COMMIT_SELL" ||
-        cmd[0] == "CANCEL_SELL" ||
-        cmd[0] == "DISPLAY_SUMMARY"
+        command == "COMMIT_BUY" ||
+        command == "CANCEL_BUY" ||
+        command == "COMMIT_SELL" ||
+        command == "CANCEL_SELL" ||
+        command == "DISPLAY_SUMMARY"
       ) {
         data = {
-          cmd: cmd[0],
+          cmd: command,
           usr: this.username
         };
-      } else if (cmd[0] == "ADD") {
+      } else if (command == "ADD") {
         data = {
           cmd: cmd[0],
           usr: this.username,
@@ -146,4 +179,12 @@ export default {
 </script>
 
 <style>
+#home {
+  padding: 10%;
+}
+
+h1 {
+  color: #95afc0;
+  font-family: 'Courier New', Courier, monospace;
+}
 </style>
