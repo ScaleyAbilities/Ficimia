@@ -122,7 +122,7 @@ export default {
 
 .heading {
   display: flex;
-  color: aliceblue;
+  color: green;
   justify-content: center;
   font-family: fantasy;
   font-size: 4em;
