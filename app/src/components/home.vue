@@ -11,6 +11,7 @@
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_BUY_AMOUNT'] = $event"></stockSymbol>
       <dollarAmount v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
+      <dollarAmount v-on:change="amount['SET_BUY_TRIGGER'] = parseFloat($event)"></dollarAmount>
       <medButton
         msg="BUY TRIGGER"
         size="sm3"
@@ -27,6 +28,7 @@
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_SELL_AMOUNT'] = $event"></stockSymbol>
       <stockAmount v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
+      <dollarAmount v-on:change="amount['SET_SELL_TRIGGER'] = parseFloat($event)"></dollarAmount>
       <medButton
         msg="SELL TRIGGER"
         size="sm3"
@@ -64,13 +66,17 @@ export default {
         BUY: String,
         SELL: String,
         SET_BUY_AMOUNT: String,
-        SET_SELL_AMOUNT: String
+        SET_BUY_TRIGGER: String,
+        SET_SELL_AMOUNT: String,
+        SET_SELL_TRIGGER: String,
       },
       amount: {
         BUY: Number,
         SELL: Number,
         SET_BUY_AMOUNT: Number,
-        SET_SELL_AMOUNT: Number
+        SET_BUY_TRIGGER: Number,
+        SET_SELL_AMOUNT: Number,
+        SET_SELL_TRIGGER: Number
       }
     };
   },
