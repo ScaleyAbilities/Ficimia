@@ -1,8 +1,17 @@
 <template>
   <v-container align-content-start class="home">
-    <v-layout mb-4 mt-5 ml-1>
-      <h1>Welcome {{username}}, what would you like to do?</h1>
+    <v-layout column mb-4 mt-5 ml-1 id="WELCOME">
+      <v-flex>
+        <h1>Welcome {{username}}, what would you like to do?</h1>
+      </v-flex>
+      <v-flex>
+        <h1>Current Balance: {{balance}}</h1>
+      </v-flex>
+      <v-flex>
+        <h1>Pending Balance: {{pending}}</h1>
+      </v-flex>
     </v-layout>
+
     <v-layout align-self-start row class="option" id="QUOTE">
       <stockSymbol v-on:change="stock['QUOTE'] = $event"></stockSymbol>
       <dollarAmount custLabel="Current Market Price" size="md8 xs6" :readonly="true"></dollarAmount>
@@ -109,8 +118,32 @@
         msg="Clicking confirm will set the current sell trigger. You have 60s before this will expire."
       ></confirm-dialog>
     </v-layout>
-    <v-layout row class="option">
-      <medButton size="xs12" msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
+
+    <v-layout align-self-start column class="option" id="DUMPLOG">
+      <v-layout row>
+        <medButton
+          msg="Generate Dumplog"
+          color="#7ed6df"
+          :block="true"
+          v-on:clicked="execute('DUMPLOG') & (dumplog = true)"
+        ></medButton>
+        <medButton msg="Hide Dumplog" color="#7ed6df" :block="true" v-on:clicked="dumplog = false"></medButton>
+      </v-layout>
+      <v-flex mu2 xs6>
+        <v-textarea
+          dark
+          readonly
+          outline
+          name="input-7-4"
+          label="Dumplog"
+          :value="dumplogText"
+          v-show="dumplog"
+        ></v-textarea>
+      </v-flex>
+    </v-layout>
+
+    <v-layout align-self-start class="option" id="LOGOUT">
+      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
     </v-layout>
   </v-container>
 </template>
@@ -134,9 +167,13 @@ export default {
 
   data() {
     return {
+      balance: 0,
+      pending: 0,
       currentPrice: "",
       command: "",
       filename: "",
+      dumplog: false,
+      dumplogText: "Dumplog loading...",
       stock: {
         QUOTE: "",
         BUY: "",
@@ -246,13 +283,17 @@ export default {
       }
 
       console.log(JSON.stringify(data));
+
       fetch("http://localhost/api/command", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json"
         }
-      }).catch(error => console.error("Error:", error));
+      })
+        .then(r => r.json().then(data => ({ status: r.status, body: data })))
+        .then(obj => console.log(obj))
+        .catch(error => console.error("Error:", error));
     }
   }
 };
