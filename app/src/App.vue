@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import MarqueeText from 'vue-marquee-text-component'
+import MarqueeText from "vue-marquee-text-component";
 export default {
   name: "app",
   components: {
-    MarqueeText,
+    MarqueeText
   }
 };
 </script>

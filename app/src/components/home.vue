@@ -1,30 +1,42 @@
 <template>
   <v-container align-content-start id="home">
-    <v-layout pb-6>
-      <h1> Welcome {{username}}, what would you like to do? </h1>
+    <v-layout pb-3 mb-3>
+      <h1>Welcome {{username}}, what would you like to do?</h1>
     </v-layout>
     <v-layout align-self-start row class="option">
-      <stockSymbol></stockSymbol>
-      <dollarAmount></dollarAmount>
-      <medButton msg="BUY" size="sm3" color="#2ecc71" :block="true" v-on:clicked="counter += 1"></medButton>
+      <stockSymbol v-on:change="stock['BUY'] = $event"></stockSymbol>
+      <dollarAmount v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
+      <medButton msg="BUY" size="sm3" color="#2ecc71" :block="true" v-on:clicked="execute('BUY')"></medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
-      <stockSymbol></stockSymbol>
-      <dollarAmount></dollarAmount>
-      <medButton msg="BUY TRIGGER" size="sm3" color="#2ecc71" :block="true" v-on:click="execute()"></medButton>
+      <stockSymbol v-on:change="stock['SET_BUY_AMOUNT'] = $event"></stockSymbol>
+      <dollarAmount v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
+      <medButton
+        msg="BUY TRIGGER"
+        size="sm3"
+        color="#2ecc71"
+        :block="true"
+        v-on:clicked="execute('SET_BUY_AMOUNT')"
+      ></medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
-      <stockSymbol></stockSymbol>
-      <stockAmount></stockAmount>
-      <medButton msg="SELL" size="sm3" color="#2ecc71" :block="true" v-on:click="execute()"></medButton>
+      <stockSymbol v-on:change="stock['SELL'] = $event"></stockSymbol>
+      <stockAmount v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
+      <medButton msg="SELL" size="sm3" color="#2ecc71" :block="true" v-on:clicked="execute('SELL')"></medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
-      <stockSymbol></stockSymbol>
-      <stockAmount></stockAmount>
-      <medButton msg="SELL TRIGGER" size="sm3" color="#2ecc71" :block="true" v-on:click="execute()"></medButton>
+      <stockSymbol v-on:change="stock['SET_SELL_AMOUNT'] = $event"></stockSymbol>
+      <stockAmount v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
+      <medButton
+        msg="SELL TRIGGER"
+        size="sm3"
+        color="#2ecc71"
+        :block="true"
+        v-on:clicked="execute('SET_SELL_AMOUNT')"
+      ></medButton>
     </v-layout>
     <v-layout class="option">
-      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true" v-on:click="execute()"></medButton>
+      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
     </v-layout>
   </v-container>
 </template>
@@ -46,20 +58,31 @@ export default {
 
   data() {
     return {
-      hide: false,
-      counter: 0,
+      command: String,
+      filename: String,
+      stock: {
+        BUY: String,
+        SELL: String,
+        SET_BUY_AMOUNT: String,
+        SET_SELL_AMOUNT: String
+      },
+      amount: {
+        BUY: Number,
+        SELL: Number,
+        SET_BUY_AMOUNT: Number,
+        SET_SELL_AMOUNT: Number
+      }
     };
   },
 
   computed: {
     username: function() {
       return this.$route.params.username;
-      },
+    }
   },
 
   methods: {
-    execute(cmd) {
-      var command = cmd;
+    execute(command) {
       var data;
       if (
         command == "COMMIT_BUY" ||
@@ -74,105 +97,71 @@ export default {
         };
       } else if (command == "ADD") {
         data = {
-          cmd: cmd[0],
+          cmd: command,
           usr: this.username,
           params: {
-            amount: cmd[1]
+            amount: this.amount[command]
           }
         };
       } else if (
-        cmd[0] == "QUOTE" ||
-        cmd[0] == "CANCEL_SET_BUY" ||
-        cmd[0] == "CANCEL_SET_SELL"
+        command == "QUOTE" ||
+        command == "CANCEL_SET_BUY" ||
+        command == "CANCEL_SET_SELL"
       ) {
         data = {
-          cmd: cmd[0],
+          cmd: command,
           usr: this.username,
           params: {
-            stock: cmd[1]
+            stock: this.stock[command]
           }
         };
       } else if (
-        cmd[0] == "BUY" ||
-        cmd[0] == "SELL" ||
-        cmd[0] == "SET_BUY_AMOUNT" ||
-        cmd[0] == "SET_SELL_AMOUNT"
+        command == "BUY" ||
+        command == "SELL" ||
+        command == "SET_BUY_AMOUNT" ||
+        command == "SET_SELL_AMOUNT"
       ) {
         data = {
-          cmd: cmd[0],
+          cmd: command,
           usr: this.username,
           params: {
-            stock: cmd[1],
-            amount: cmd[2]
+            stock: this.stock[command],
+            amount: this.amount[command]
           }
         };
-      } else if (cmd[0] == "SET_BUY_TRIGGER" || cmd[0] == "SET_SELL_TRIGGER") {
+      } else if (
+        command == "SET_BUY_TRIGGER" ||
+        command == "SET_SELL_TRIGGER"
+      ) {
         data = {
-          cmd: cmd[0],
+          cmd: command,
           usr: this.username,
           params: {
-            stock: cmd[1],
-            price: cmd[2]
+            stock: this.stock[command],
+            price: this.amount[command]
           }
         };
-      } else if (cmd[0] == "DUMPLOG") {
-        if (cmd.length == 2) {
-          data = {
-            cmd: cmd[0],
-            usr: null,
-            params: {
-              filename: cmd[1]
-            }
-          };
-        } else if (cmd.length == 3)
-          data = {
-            cmd: cmd[0],
-            usr: cmd[1],
-            params: {
-              filename: cmd[2]
-            }
-          };
+      } else if (command == "DUMPLOG") {
+        data = {
+          cmd: command,
+          usr: this.username,
+          params: {
+            filename: this.filename
+          }
+        };
       } else {
         alert("Command not recognized");
         return;
       }
-      if (
-        data.cmd == "ADD" ||
-        data.cmd == "BUY" ||
-        data.cmd == "COMMIT_BUY" ||
-        data.cmd == "CANCEL_BUY" ||
-        data.cmd == "COMMIT_SELL" ||
-        data.cmd == "CANCEL_SELL" ||
-        data.cmd == "SET_BUY_AMOUNT" ||
-        data.cmd == "SET_BUY_TRIGGER" ||
-        data.cmd == "CANCEL_SET_BUY" ||
-        data.cmd == "SET_SELL_AMOUNT" ||
-        data.cmd == "SET_SELL_TRIGGER" ||
-        data.cmd == "CANCEL_SELL_TRIGGER"
-      ) {
-        console.log(JSON.stringify(data));
-        fetch("http://localhost:5000/api/command", {
-          method: "POST",
-          json: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }).catch(error => console.error("Error:", error));
-      } else if (
-        data.cmd == "QUOTE" ||
-        data.cmd == "DUMPLOG" ||
-        data.cmd == "DISPLAY_SUMMARY"
-      ) {
-        fetch("http://localhost:5000/api/command", {
-          method: "GET",
-          json: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-          .then(response => alert("Responce:", response.json()))
-          .catch(error => console.error("Error:", error));
-      }
+
+      console.log(JSON.stringify(data));
+      fetch("http://localhost/api/command", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).catch(error => console.error("Error:", error));
     }
   }
 };
@@ -185,6 +174,6 @@ export default {
 
 h1 {
   color: #95afc0;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 </style>

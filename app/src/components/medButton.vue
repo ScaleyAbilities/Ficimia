@@ -1,6 +1,6 @@
 <template>
-  <v-flex pl-1 pr-1 :class="size" id="medButton">
-    <v-btn
+  <v-flex pl-1 pr-1 ma-0 :class="size" id="medButton">
+    <v-btn pa-0
       :dark="true"
       :large="true"
       :outline="true"
@@ -29,4 +29,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>
