@@ -153,6 +153,7 @@
         v-on:confirm="summary = false"
         v-on:cancel="summary = false"
         command="User Summary"
+        :stocks="stocks"
         :msg="summaryText"
       ></confirm-dialog>
     </v-layout>
@@ -182,6 +183,7 @@ export default {
 
   data() {
     return {
+      stocks: [],
       balance: 0,
       pending: 0,
       currentPrice: "",

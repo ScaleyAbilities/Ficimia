@@ -3,11 +3,23 @@
     <v-dialog v-model="dialog" dark persistent max-width="400">
       <v-card>
         <v-card-title class="headline">{{command}}</v-card-title>
-        <v-card-text>{{msg}}</v-card-text>
+        <v-card-text>
+          <div v-if="stocks">
+            <li  v-for="(amount, stock) of stocks">
+              Stock: {{stock}} Amount: {{amount}}
+            </li>
+          </div>
+          <p v-else>{{msg}}</p>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn v-show="cancel" color="red darken-1" flat="flat" @click="$emit('cancel')">Cancel</v-btn>
-          <v-btn v-show="confirm" color="green darken-1" flat="flat" @click="$emit('confirm')">Confirm</v-btn>
+          <v-btn
+            v-show="confirm"
+            color="green darken-1"
+            flat="flat"
+            @click="$emit('confirm')"
+          >Confirm</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -18,9 +30,10 @@
 export default {
   name: "confirmDialog",
   props: {
-    cancel: {default: true, type: Boolean},
-    confirm: {default: true, type: Boolean},
+    cancel: { default: true, type: Boolean },
+    confirm: { default: true, type: Boolean },
     command: String,
+    stocks: Array,
     msg: String,
     dialog: { default: false, type: Boolean }
   }
