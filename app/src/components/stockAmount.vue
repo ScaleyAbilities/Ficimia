@@ -8,7 +8,8 @@
         :clearable="true"
         outline
         :dark="true"
-        v-on:change="$emit('change', amount)"
+        @input="$emit('change', amount)"
+        @clear="$emit('change', amount)"
     ></v-text-field>
   </v-flex>
 </template>
@@ -18,7 +19,7 @@ export default {
   name: "stockAmount",
   data() {
     return {
-      amount: String,
+      amount: '',
     }
   }
 };

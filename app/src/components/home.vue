@@ -6,34 +6,56 @@
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['BUY'] = $event"></stockSymbol>
       <dollarAmount v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
-      <medButton msg="BUY" size="sm3" color="#2ecc71" :block="true" v-on:clicked="execute('BUY')"></medButton>
+      <medButton
+        msg="BUY"
+        size="sm3"
+        color="#2ecc71"
+        :block="true"
+        :disabled="(amount['BUY'] == 0 || isNaN(amount['BUY']) || stock['BUY'].length != 3)"
+        v-on:clicked="execute('BUY')"
+      ></medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_BUY_AMOUNT'] = $event"></stockSymbol>
       <dollarAmount v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
-      <dollarAmount v-on:change="amount['SET_BUY_TRIGGER'] = parseFloat($event)"></dollarAmount>
+      <dollarAmount
+        custLabel="Max. Price"
+        v-on:change="amount['SET_BUY_TRIGGER'] = parseFloat($event)"
+      ></dollarAmount>
       <medButton
         msg="BUY TRIGGER"
         size="sm3"
         color="#2ecc71"
         :block="true"
+        :disabled="(amount['SET_BUY_AMOUNT'] == 0 || isNaN(amount['SET_BUY_AMOUNT']) || isNaN(amount['SET_BUY_TRIGGER']) || amount['SET_BUY_TRIGGER'] == 0 || stock['SET_BUY_AMOUNT'].length != 3)"
         v-on:clicked="execute('SET_BUY_AMOUNT')"
       ></medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SELL'] = $event"></stockSymbol>
       <stockAmount v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
-      <medButton msg="SELL" size="sm3" color="#2ecc71" :block="true" v-on:clicked="execute('SELL')"></medButton>
+      <medButton 
+        msg="SELL" 
+        size="sm3" 
+        color="#2ecc71" 
+        :block="true"
+        :disabled="(amount['SELL'] == 0 || isNaN(amount['SELL']) || stock['SELL'].length != 3)" 
+        v-on:clicked="execute('SELL')">
+      </medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_SELL_AMOUNT'] = $event"></stockSymbol>
       <stockAmount v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
-      <dollarAmount v-on:change="amount['SET_SELL_TRIGGER'] = parseFloat($event)"></dollarAmount>
+      <dollarAmount
+        custLabel="Min. Price"
+        v-on:change="amount['SET_SELL_TRIGGER'] = parseFloat($event)"
+      ></dollarAmount>
       <medButton
         msg="SELL TRIGGER"
         size="sm3"
         color="#2ecc71"
         :block="true"
+        :disabled="(amount['SET_SELL_AMOUNT'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || amount['SET_SELL_TRIGGER'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || stock['SET_SELL_AMOUNT'].length != 3)"
         v-on:clicked="execute('SET_SELL_AMOUNT')"
       ></medButton>
     </v-layout>
@@ -60,23 +82,23 @@ export default {
 
   data() {
     return {
-      command: String,
-      filename: String,
+      command: "",
+      filename: "",
       stock: {
-        BUY: String,
-        SELL: String,
-        SET_BUY_AMOUNT: String,
-        SET_BUY_TRIGGER: String,
-        SET_SELL_AMOUNT: String,
-        SET_SELL_TRIGGER: String,
+        BUY: "",
+        SELL: "",
+        SET_BUY_AMOUNT: "",
+        SET_BUY_TRIGGER: "",
+        SET_SELL_AMOUNT: "",
+        SET_SELL_TRIGGER: ""
       },
       amount: {
-        BUY: Number,
-        SELL: Number,
-        SET_BUY_AMOUNT: Number,
-        SET_BUY_TRIGGER: Number,
-        SET_SELL_AMOUNT: Number,
-        SET_SELL_TRIGGER: Number
+        BUY: 0,
+        SELL: 0,
+        SET_BUY_AMOUNT: 0,
+        SET_BUY_TRIGGER: 0,
+        SET_SELL_AMOUNT: 0,
+        SET_SELL_TRIGGER: 0
       }
     };
   },

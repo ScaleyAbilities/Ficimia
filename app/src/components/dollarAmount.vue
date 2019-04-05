@@ -2,13 +2,14 @@
   <v-flex grow pl-1 pr-1>
     <v-text-field 
         v-model="dollar"
-        label="Amount" 
+        :label="custLabel ? custLabel : 'Dollar Amount'" 
         placeholder="10.00"
         outline
         :dark="true"
         type="number"
         :clearable="true"
-        v-on:change="$emit('change', dollar)"
+        @input="$emit('change', dollar)"
+        @clear="$emit('change', dollar)"
     ></v-text-field>
   </v-flex>
 </template>
@@ -18,9 +19,13 @@ export default {
   name: "dollarAmount",
   data() {
     return {
-      dollar: String,
+      dollar: '',
     }
-  }
+  },
+
+  props: {
+    custLabel: String,
+  },
 };
 </script>
 

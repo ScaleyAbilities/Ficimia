@@ -8,7 +8,8 @@
         mask="AAA"
         placeholder="ABC"
         :clearable="true"
-        v-on:change="$emit('change', stockSym)"
+        @input="$emit('change', stockSym)"
+        @clear="$emit('change', stockSym)"
     ></v-text-field>
   </v-flex>
 </template>
