@@ -2,7 +2,7 @@
   <div data-app>
     <v-dialog v-model="dialog" dark persistent max-width="400">
       <v-card>
-        <v-card-title class="headline">Confirm {{command}}?</v-card-title>
+        <v-card-title class="headline">{{command}}</v-card-title>
         <v-card-text>{{msg}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

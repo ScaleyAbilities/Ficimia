@@ -13,13 +13,13 @@
     </v-layout>
 
     <v-layout align-self-start row class="option" id="ADD-QUOTE">
-      <dollarAmount custLabel="Add Funds" v-on:change="amount['ADD']" size="md8 xs6"></dollarAmount>
+      <dollarAmount custLabel="Add Funds" v-on:change="amount['ADD'] = $event" size="md8 xs6"></dollarAmount>
       <medButton
         msg="ADD"
         size="xs2 md2"
         color="#2ecc71"
         :block="true"
-        :disabled="(amount['ADD'] == 0 || isNaN(amount['ADD']))"
+        :disabled="(amount['ADD'] == 0 || isNaN(amount['ADD']) || amount['ADD'] == null)"
         v-on:clicked="execute('ADD')"
       ></medButton>
       <stockSymbol size="xs4 md2" v-on:change="stock['QUOTE'] = $event"></stockSymbol>
@@ -128,27 +128,33 @@
       ></confirm-dialog>
     </v-layout>
 
-    <v-layout align-self-start column class="option" id="DUMPLOG">
-      <v-layout row>
-        <medButton
-          msg="Generate Dumplog"
-          color="#7ed6df"
-          :block="true"
-          v-on:clicked="execute('DUMPLOG') & (dumplog = true)"
-        ></medButton>
-        <medButton msg="Hide Dumplog" color="#7ed6df" :block="true" v-on:clicked="dumplog = false"></medButton>
-      </v-layout>
-      <v-flex mu2 xs6>
-        <v-textarea
-          dark
-          readonly
-          outline
-          name="input-7-4"
-          label="Dumplog"
-          :value="dumplogText"
-          v-show="dumplog"
-        ></v-textarea>
-      </v-flex>
+    <v-layout align-self-start row class="option" id="DUMPLOG">
+      <medButton
+        msg="Generate Dumplog"
+        color="#7ed6df"
+        :block="true"
+        v-on:clicked="execute('DUMPLOG') & (dumplog = true)"
+      ></medButton>
+      <confirm-dialog
+        :dialog="dumplog"
+        v-on:confirm="dumplog = false"
+        v-on:cancel="dumplog = false"
+        command="Dumplog"
+        :msg="dumplogText"
+      ></confirm-dialog>
+      <medButton
+        msg="User Summary"
+        color="#7ed6df"
+        :block="true"
+        v-on:clicked="execute('DISPLAY_USER_SUMMARY') & (summary = true)"
+      ></medButton>
+      <confirm-dialog
+        :dialog="summary"
+        v-on:confirm="summary = false"
+        v-on:cancel="summary = false"
+        command="User Summary"
+        :msg="summaryText"
+      ></confirm-dialog>
     </v-layout>
 
     <v-layout align-self-start class="option" id="LOGOUT">
@@ -183,6 +189,8 @@ export default {
       filename: "",
       dumplog: false,
       dumplogText: "Dumplog loading...",
+      summary: false,
+      summaryText: "User Summary loading...",
       stock: {
         QUOTE: "",
         BUY: "",
