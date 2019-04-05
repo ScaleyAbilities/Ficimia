@@ -7,7 +7,7 @@
         outline
         :dark="true"
         color="white"
-        type="number"
+        type="text"
         :clearable="true"
         @input="$emit('change', dollar)"
         @clear="$emit('change', dollar)"
