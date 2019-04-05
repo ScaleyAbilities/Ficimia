@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <h1 v-show=!hide>Login</h1><h1 v-show=hide>Enter Command</h1>
-    <input v-show=hide v-model="command" placeholder="Enter command"> <br>
-    <button v-show=hide v-on:click="execute()">Execute command</button>
-    <input v-show=!hide v-model="username" placeholder="John Appleseed"> <br>
-    <button v-show=!hide v-on:click="hide = !hide">Login</button>
+    <marquee-text :repeat="30" :duration="3">
+      <div class="heading">~ SCALEY ABILITIES ~</div>
+    </marquee-text>
+    <router-view/>
   </div>
 </template>
 
 <script>
+import MarqueeText from "vue-marquee-text-component";
 export default {
-  name: 'app',
+  name: "app",
+  components: {
+    MarqueeText
+  },
   data() {
     return {
       hide: false,
@@ -94,11 +97,35 @@ export default {
       .catch(error => console.error('Error:', error));
     }
   }
-}
+};
 </script>
 
 <style>
 #app {
-  /* put some fancy css here */
+  height: 100vh;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  position: relative;
+  background-color: black;
+}
+
+#app::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("assets/snake.jpg");
+  background-size: cover;
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  opacity: 0.2;
+}
+
+.heading {
+  display: flex;
+  color: aliceblue;
+  justify-content: center;
+  font-family: fantasy;
+  font-size: 4em;
 }
 </style>
