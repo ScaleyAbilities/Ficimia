@@ -3,19 +3,28 @@
     <v-layout mb-4 mt-5 ml-1>
       <h1>Welcome {{username}}, what would you like to do?</h1>
     </v-layout>
-    <v-layout align-self-start row class="option">
+    
+    <v-layout align-self-start row class="option" id="BUY">
       <stockSymbol v-on:change="stock['BUY'] = $event"></stockSymbol>
       <dollarAmount v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
       <medButton
         msg="BUY"
-        size="sm3"
+        size="xs3 md2"
         color="#2ecc71"
         :block="true"
         :disabled="(amount['BUY'] == 0 || isNaN(amount['BUY']) || stock['BUY'].length != 3)"
-        v-on:clicked="execute('BUY')"
+        v-on:clicked="execute('BUY') & (dialog['BUY'] = true)"
       ></medButton>
+      <confirm-dialog
+        :dialog="dialog['BUY']"
+        v-on:confirm="execute('COMMIT_BUY') & (dialog['BUY'] = false)"
+        v-on:cancel="execute('CANCEL_BUY') & (dialog['BUY'] = false)"
+        command="Buy"
+        msg="Clicking confirm will complete your stock purchase. You have 60s before this will expire."
+      ></confirm-dialog>
     </v-layout>
-    <v-layout align-self-start row class="option">
+    
+    <v-layout align-self-start row class="option" id="BUY-TRIGGER">
       <stockSymbol v-on:change="stock['SET_BUY_AMOUNT'] = $event"></stockSymbol>
       <dollarAmount v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
       <dollarAmount
@@ -28,22 +37,38 @@
         color="#2ecc71"
         :block="true"
         :disabled="(amount['SET_BUY_AMOUNT'] == 0 || isNaN(amount['SET_BUY_AMOUNT']) || isNaN(amount['SET_BUY_TRIGGER']) || amount['SET_BUY_TRIGGER'] == 0 || stock['SET_BUY_AMOUNT'].length != 3)"
-        v-on:clicked="execute('SET_BUY_AMOUNT')"
+        v-on:clicked="execute('SET_BUY_AMOUNT') & (dialog['SET_BUY_AMOUNT'] = true)"
       ></medButton>
+      <confirm-dialog
+        :dialog="dialog['SET_BUY_AMOUNT']"
+        v-on:confirm="execute('SET_BUY_TRIGGER') & (dialog['SET_BUY_AMOUNT'] = false)"
+        v-on:cancel="execute('CANCEL_SET_BUY') & (dialog['SET_BUY_AMOUNT'] = false)"
+        command="Buy Trigger"
+        msg="Clicking confirm will set the current buy trigger. You have 60s before this will expire."
+      ></confirm-dialog>
     </v-layout>
-    <v-layout align-self-start row class="option">
+
+    <v-layout align-self-start row class="option" id="SELL">
       <stockSymbol v-on:change="stock['SELL'] = $event"></stockSymbol>
       <stockAmount v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
-      <medButton 
-        msg="SELL" 
-        size="sm3" 
-        color="#2ecc71" 
+      <medButton
+        msg="SELL"
+        size="xs3 md2"
+        color="#2ecc71"
         :block="true"
-        :disabled="(amount['SELL'] == 0 || isNaN(amount['SELL']) || stock['SELL'].length != 3)" 
-        v-on:clicked="execute('SELL')">
-      </medButton>
+        :disabled="(amount['SELL'] == 0 || isNaN(amount['SELL']) || stock['SELL'].length != 3)"
+        v-on:clicked="execute('SELL') & (dialog['SELL'] = true)"
+      ></medButton>
+      <confirm-dialog
+        :dialog="dialog['SELL']"
+        v-on:confirm="execute('COMMIT_SELL') & (dialog['SELL'] = false)"
+        v-on:cancel="execute('CANCEL_SELL') & (dialog['SELL'] = false)"
+        command="Sell"
+        msg="Clicking confirm will complete your stock sale. You have 60s before this will expire."
+      ></confirm-dialog>
     </v-layout>
-    <v-layout align-self-start row class="option">
+
+    <v-layout align-self-start row class="option" id="SELL-TRIGGER">
       <stockSymbol v-on:change="stock['SET_SELL_AMOUNT'] = $event"></stockSymbol>
       <stockAmount v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
       <dollarAmount
@@ -56,8 +81,15 @@
         color="#2ecc71"
         :block="true"
         :disabled="(amount['SET_SELL_AMOUNT'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || amount['SET_SELL_TRIGGER'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || stock['SET_SELL_AMOUNT'].length != 3)"
-        v-on:clicked="execute('SET_SELL_AMOUNT')"
+        v-on:clicked="execute('SET_SELL_AMOUNT') & (dialog['SET_SELL_AMOUNT'] = true)"
       ></medButton>
+      <confirm-dialog
+        :dialog="dialog['SET_SELL_AMOUNT']"
+        v-on:confirm="execute('SET_SELL_TRIGGER') & (dialog['SET_SELL_AMOUNT'] = false)"
+        v-on:cancel="execute('CANCEL_SET_SELL') & (dialog['SET_SELL_AMOUNT'] = false)"
+        command="Sell Trigger"
+        msg="Clicking confirm will set the current sell trigger. You have 60s before this will expire."
+      ></confirm-dialog>
     </v-layout>
     <v-layout row class="option">
       <medButton size="xs12" msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
@@ -70,6 +102,7 @@ import medButton from "./medButton.vue";
 import stockSymbol from "./stockSymbol.vue";
 import dollarAmount from "./dollarAmount.vue";
 import stockAmount from "./stockAmount.vue";
+import confirmDialog from "./confirmDialog.vue";
 export default {
   name: "home",
   url: "http://127.0.0.1:80/api/command",
@@ -77,7 +110,8 @@ export default {
     medButton,
     dollarAmount,
     stockSymbol,
-    stockAmount
+    stockAmount,
+    confirmDialog
   },
 
   data() {
@@ -99,6 +133,13 @@ export default {
         SET_BUY_TRIGGER: 0,
         SET_SELL_AMOUNT: 0,
         SET_SELL_TRIGGER: 0
+      },
+
+      dialog: {
+        BUY: false,
+        SELL: false,
+        SET_BUY_AMOUNT: false,
+        SET_SELL_AMOUNT: false
       }
     };
   },
@@ -209,11 +250,11 @@ h1 {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }
 </style>
