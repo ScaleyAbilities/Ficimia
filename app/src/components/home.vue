@@ -4,11 +4,11 @@
       <h1>Welcome {{username}}, what would you like to do?</h1>
     </v-layout>
     <v-layout align-self-start row class="option">
-      <stockSymbol v-on:change="stock['BUY'] = $event"></stockSymbol>
-      <dollarAmount v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
+      <stockSymbol  v-on:change="stock['BUY'] = $event"></stockSymbol>
+      <dollarAmount size="md8 xs6" v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
       <medButton
         msg="BUY"
-        size="sm3"
+        size="xs3 md2"
         color="#2ecc71"
         :block="true"
         :disabled="(amount['BUY'] == 0 || isNaN(amount['BUY']) || stock['BUY'].length != 3)"
@@ -17,8 +17,9 @@
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_BUY_AMOUNT'] = $event"></stockSymbol>
-      <dollarAmount v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
+      <dollarAmount size="md4 xs3" v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
       <dollarAmount
+        size="md4 xs3"
         custLabel="Max. Price"
         v-on:change="amount['SET_BUY_TRIGGER'] = parseFloat($event)"
       ></dollarAmount>
@@ -33,10 +34,10 @@
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SELL'] = $event"></stockSymbol>
-      <stockAmount v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
+      <stockAmount size="md8 xs6" v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
       <medButton 
         msg="SELL" 
-        size="sm3" 
+        size="xs3 md2"
         color="#2ecc71" 
         :block="true"
         :disabled="(amount['SELL'] == 0 || isNaN(amount['SELL']) || stock['SELL'].length != 3)" 
@@ -45,8 +46,9 @@
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_SELL_AMOUNT'] = $event"></stockSymbol>
-      <stockAmount v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
+      <stockAmount size="md4 xs3" v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
       <dollarAmount
+        size="md4 xs3"
         custLabel="Min. Price"
         v-on:change="amount['SET_SELL_TRIGGER'] = parseFloat($event)"
       ></dollarAmount>

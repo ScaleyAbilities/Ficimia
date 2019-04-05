@@ -6,6 +6,7 @@
         placeholder="10.00"
         outline
         :dark="true"
+        color="white"
         type="number"
         :clearable="true"
         @input="$emit('change', dollar)"
@@ -19,15 +20,12 @@ export default {
   name: "dollarAmount",
   props: {
     size: String,
+    custLabel: String,
   },
   data() {
     return {
       dollar: '',
     }
-  },
-
-  props: {
-    custLabel: String,
   },
 };
 </script>
