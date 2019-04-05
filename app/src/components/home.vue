@@ -3,7 +3,19 @@
     <v-layout mb-4 mt-5 ml-1>
       <h1>Welcome {{username}}, what would you like to do?</h1>
     </v-layout>
-    
+    <v-layout align-self-start row class="option" id="QUOTE">
+      <stockSymbol v-on:change="stock['QUOTE'] = $event"></stockSymbol>
+      <dollarAmount custLabel="Current Market Price" size="md8 xs6" :readonly="true"></dollarAmount>
+      <medButton
+        msg="GET QUOTE"
+        size="xs3 md2"
+        color="#2ecc71"
+        :block="true"
+        :disabled="(stock['QUOTE'].length != 3)"
+        v-on:clicked="execute('QUOTE')"
+      ></medButton>
+    </v-layout>
+
     <v-layout align-self-start row class="option" id="BUY">
       <stockSymbol v-on:change="stock['BUY'] = $event"></stockSymbol>
       <dollarAmount size="md8 xs6" v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
@@ -23,9 +35,11 @@
         msg="Clicking confirm will complete your stock purchase. You have 60s before this will expire."
       ></confirm-dialog>
     </v-layout>
-    
+
     <v-layout align-self-start row class="option" id="BUY-TRIGGER">
-      <stockSymbol v-on:change="stock['SET_BUY_AMOUNT'] = $event"></stockSymbol>
+      <stockSymbol
+        v-on:change="stock['SET_BUY_TRIGGER'] = stock['SET_BUY_AMOUNT'] = stock['CANCEL_SET_BUY'] = $event"
+      ></stockSymbol>
       <dollarAmount size="md4 xs3" v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
       <dollarAmount
         size="md4 xs3"
@@ -37,7 +51,7 @@
         size="xs3 md2"
         color="#2ecc71"
         :block="true"
-        :disabled="(amount['SET_BUY_AMOUNT'] == 0 || isNaN(amount['SET_BUY_AMOUNT']) || isNaN(amount['SET_BUY_TRIGGER']) || amount['SET_BUY_TRIGGER'] == 0 || stock['SET_BUY_AMOUNT'].length != 3)"
+        :disabled="(amount['SET_BUY_AMOUNT'] == 0 || isNaN(amount['SET_BUY_AMOUNT']) || isNaN(amount['SET_BUY_TRIGGER']) || amount['SET_BUY_TRIGGER'] == 0 || stock['SET_BUY_TRIGGER'].length != 3)"
         v-on:clicked="execute('SET_BUY_AMOUNT') & (dialog['SET_BUY_AMOUNT'] = true)"
       ></medButton>
       <confirm-dialog
@@ -52,10 +66,10 @@
     <v-layout align-self-start row class="option" id="SELL">
       <stockSymbol v-on:change="stock['SELL'] = $event"></stockSymbol>
       <stockAmount size="md8 xs6" v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
-      <medButton 
-        msg="SELL" 
+      <medButton
+        msg="SELL"
         size="xs3 md2"
-        color="#2ecc71" 
+        color="#2ecc71"
         :block="true"
         :disabled="(amount['SELL'] == 0 || isNaN(amount['SELL']) || stock['SELL'].length != 3)"
         v-on:clicked="execute('SELL') & (dialog['SELL'] = true)"
@@ -70,7 +84,9 @@
     </v-layout>
 
     <v-layout align-self-start row class="option" id="SELL-TRIGGER">
-      <stockSymbol v-on:change="stock['SET_SELL_AMOUNT'] = $event"></stockSymbol>
+      <stockSymbol
+        v-on:change="stock['SET_SELL_TRIGGER'] = stock['SET_SELL_AMOUNT'] = stock['CANCEL_SET_SELL'] = $event"
+      ></stockSymbol>
       <stockAmount size="md4 xs3" v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
       <dollarAmount
         size="md4 xs3"
@@ -82,7 +98,7 @@
         size="xs3 md2"
         color="#2ecc71"
         :block="true"
-        :disabled="(amount['SET_SELL_AMOUNT'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || amount['SET_SELL_TRIGGER'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || stock['SET_SELL_AMOUNT'].length != 3)"
+        :disabled="(amount['SET_SELL_AMOUNT'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || amount['SET_SELL_TRIGGER'] == 0 || isNaN(amount['SET_SELL_AMOUNT']) || stock['SET_SELL_TRIGGER'].length != 3)"
         v-on:clicked="execute('SET_SELL_AMOUNT') & (dialog['SET_SELL_AMOUNT'] = true)"
       ></medButton>
       <confirm-dialog
@@ -118,15 +134,19 @@ export default {
 
   data() {
     return {
+      currentPrice: "",
       command: "",
       filename: "",
       stock: {
+        QUOTE: "",
         BUY: "",
         SELL: "",
         SET_BUY_AMOUNT: "",
         SET_BUY_TRIGGER: "",
         SET_SELL_AMOUNT: "",
-        SET_SELL_TRIGGER: ""
+        SET_SELL_TRIGGER: "",
+        CANCEL_SET_BUY: "",
+        CANCEL_SET_SELL: ""
       },
       amount: {
         BUY: 0,

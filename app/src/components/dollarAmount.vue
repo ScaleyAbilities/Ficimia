@@ -3,6 +3,7 @@
     <v-text-field
       v-model="dollar"
       :label="custLabel ? custLabel : 'Dollar Amount'"
+      :readonly="readonly"
       placeholder="420.00"
       min="0"
       outline
@@ -20,7 +21,8 @@ export default {
   name: "dollarAmount",
   props: {
     size: String,
-    custLabel: String
+    custLabel: String,
+    readonly: {default: false, type: Boolean},
   },
 
   data() {
