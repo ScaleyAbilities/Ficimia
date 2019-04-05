@@ -13,17 +13,8 @@
     </v-layout>
 
     <v-layout align-self-start row class="option" id="ADD-QUOTE">
-      <dollarAmount custLabel="Add Funds" v-on:change="amount['ADD'] = $event" size="md8 xs6"></dollarAmount>
-      <medButton
-        msg="ADD"
-        size="xs2 md2"
-        color="#2ecc71"
-        :block="true"
-        :disabled="(amount['ADD'] == 0 || isNaN(amount['ADD']) || amount['ADD'] == null)"
-        v-on:clicked="execute('ADD')"
-      ></medButton>
-      <stockSymbol size="xs4 md2" v-on:change="stock['QUOTE'] = $event"></stockSymbol>
-      <dollarAmount custLabel="Current Market Price" size="md8 xs6" :readonly="true"></dollarAmount>
+      <stockSymbol size="xs3 md2" v-on:change="stock['QUOTE'] = $event"></stockSymbol>
+      <dollarAmount custLabel="Current Market Price" size="md4" :readonly="true"></dollarAmount>
       <medButton
         msg="GET QUOTE"
         size="xs3 md2"
@@ -31,6 +22,15 @@
         :block="true"
         :disabled="(stock['QUOTE'].length != 3)"
         v-on:clicked="execute('QUOTE')"
+      ></medButton>
+      <dollarAmount custLabel="Add Funds" v-on:change="amount['ADD'] = $event" size=" xs2"></dollarAmount>
+      <medButton
+        msg="ADD"
+        size="xs3 md2"
+        color="#2ecc71"
+        :block="true"
+        :disabled="(amount['ADD'] == 0 || isNaN(amount['ADD']) || amount['ADD'] == null)"
+        v-on:clicked="execute('ADD')"
       ></medButton>
     </v-layout>
 
@@ -150,7 +150,6 @@
       ></medButton>
       <confirm-dialog
         :dialog="summary"
-        :cancel="false"
         v-on:confirm="summary = false"
         v-on:cancel="summary = false"
         command="User Summary"
