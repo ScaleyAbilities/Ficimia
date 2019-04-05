@@ -14,7 +14,7 @@
 
     <v-layout align-self-start row class="option" id="ADD-QUOTE">
       <stockSymbol size="xs3 md2" v-on:change="stock['QUOTE'] = $event"></stockSymbol>
-      <dollarAmount custLabel="Current Market Price" size="md4" :readonly="true"></dollarAmount>
+      <dollarAmount :placeholder="currentPrice" custLabel="Current Market Price" size="md4" :readonly="true"></dollarAmount>
       <medButton
         msg="GET QUOTE"
         size="xs3 md2"
