@@ -12,8 +12,17 @@
       </v-flex>
     </v-layout>
 
-    <v-layout align-self-start row class="option" id="QUOTE">
-      <stockSymbol v-on:change="stock['QUOTE'] = $event"></stockSymbol>
+    <v-layout align-self-start row class="option" id="ADD-QUOTE">
+      <dollarAmount custLabel="Add Funds" v-on:change="amount['ADD']" size="md8 xs6"></dollarAmount>
+      <medButton
+        msg="ADD"
+        size="xs2 md2"
+        color="#2ecc71"
+        :block="true"
+        :disabled="(amount['ADD'] == 0 || isNaN(amount['ADD']))"
+        v-on:clicked="execute('ADD')"
+      ></medButton>
+      <stockSymbol size="xs4 md2" v-on:change="stock['QUOTE'] = $event"></stockSymbol>
       <dollarAmount custLabel="Current Market Price" size="md8 xs6" :readonly="true"></dollarAmount>
       <medButton
         msg="GET QUOTE"
@@ -26,7 +35,7 @@
     </v-layout>
 
     <v-layout align-self-start row class="option" id="BUY">
-      <stockSymbol v-on:change="stock['BUY'] = $event"></stockSymbol>
+      <stockSymbol v-on:change="stock['BUY'] = stock['CANCEL_BUY'] = $event"></stockSymbol>
       <dollarAmount size="md8 xs6" v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
       <medButton
         msg="BUY"
@@ -73,7 +82,7 @@
     </v-layout>
 
     <v-layout align-self-start row class="option" id="SELL">
-      <stockSymbol v-on:change="stock['SELL'] = $event"></stockSymbol>
+      <stockSymbol v-on:change="stock['SELL'] = stock['CANCEL_SELL'] = $event"></stockSymbol>
       <stockAmount size="md8 xs6" v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
       <medButton
         msg="SELL"
@@ -177,7 +186,9 @@ export default {
       stock: {
         QUOTE: "",
         BUY: "",
+        CANCEL_BUY: "",
         SELL: "",
+        CANCEL_SELL: "",
         SET_BUY_AMOUNT: "",
         SET_BUY_TRIGGER: "",
         SET_SELL_AMOUNT: "",
@@ -186,6 +197,7 @@ export default {
         CANCEL_SET_SELL: ""
       },
       amount: {
+        ADD: 0,
         BUY: 0,
         SELL: 0,
         SET_BUY_AMOUNT: 0,
