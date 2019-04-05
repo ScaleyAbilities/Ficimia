@@ -137,8 +137,8 @@
       ></medButton>
       <confirm-dialog
         :dialog="dumplog"
-        v-on:confirm="dumplog = false"
-        v-on:cancel="dumplog = false"
+        :cancel="false"
+        :confirm="false"
         command="Dumplog"
         :msg="dumplogText"
       ></confirm-dialog>
@@ -158,8 +158,8 @@
       ></confirm-dialog>
     </v-layout>
 
-    <v-layout align-self-start pt2 class="option" id="LOGOUT">
-      <medButton size="pa2" msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
+    <v-layout mt-4 align-self-start class="option" id="LOGOUT">
+      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
     </v-layout>
   </v-container>
 </template>
@@ -170,6 +170,7 @@ import stockSymbol from "./stockSymbol.vue";
 import dollarAmount from "./dollarAmount.vue";
 import stockAmount from "./stockAmount.vue";
 import confirmDialog from "./confirmDialog.vue";
+
 export default {
   name: "home",
   url: "http://127.0.0.1:80/api/command",
@@ -296,7 +297,7 @@ export default {
           cmd: command,
           usr: this.username,
           params: {
-            filename: this.filename
+            filename: "logs.xml"
           }
         };
       } else {
@@ -312,13 +313,35 @@ export default {
         headers: {
           "Content-Type": "application/json"
         }
-      })
-        .then(r => r.json().then(data => ({ 
-          status: r.status, 
-          body: data 
-        
-        })))
-        .then(obj => console.log(obj))
+      }).then(r => r.json())
+        .then(body => {
+          console.log(body);
+
+          if (body.status !== 'ok')
+            throw new Error(body.data);
+
+          if (command === 'DUMPLOG') {
+            let uriContent = "data:application/octet-stream," + encodeURIComponent(body.data);
+            let newWindow = window.open(uriContent, 'log');
+            this.dumplog = false;
+          }
+
+          if (command === 'QUOTE') {
+            this.currentPrice = body.data[Object.keys(body.data)[0]];
+          }
+
+          if (command === 'DISPLAY_SUMMARY') {
+            let text = `Balance: ${body.data.balance}<br>`;
+            text += `Pending Balance: ${body.data.pending}<br><br>User Stocks:<br>`;
+            for (const key of Object.keys(body.data.stocks)) {
+              text += `  ${key}: ${body.data.stocks[key]}<br>`;
+            }
+
+            this.summaryText = text;
+          }
+          
+          // do other stuff
+        })
         .catch(error => console.error("Error:", error));
     }
   }

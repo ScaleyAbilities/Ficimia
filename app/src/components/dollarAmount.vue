@@ -4,7 +4,7 @@
       v-model="dollar"
       :label="custLabel ? custLabel : 'Dollar Amount'"
       :readonly="readonly"
-      :placeholder="placeholder ? placeholder : 420.00"
+      :placeholder="placeholder ? placeholder : '420.00'"
       min="0"
       outline
       :dark="true"
@@ -23,7 +23,7 @@ export default {
   props: {
     size: String,
     custLabel: String,
-    placeholder: Number,
+    placeholder: String,
     readonly: {default: false, type: Boolean},
   },
 
