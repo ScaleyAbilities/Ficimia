@@ -1,20 +1,20 @@
 <template>
-  <v-container align-content-start id="home">
-    <v-layout pb-3 mb-3>
+  <v-container align-content-start class="home">
+    <v-layout mb-4 mt-5 ml-1>
       <h1>Welcome {{username}}, what would you like to do?</h1>
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['BUY'] = $event"></stockSymbol>
-      <dollarAmount v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
-      <medButton msg="BUY" size="sm3" color="#2ecc71" :block="true" v-on:clicked="execute('BUY')"></medButton>
+      <dollarAmount size="md8 xs6" v-on:change="amount['BUY'] = parseFloat($event)"></dollarAmount>
+      <medButton msg="BUY" size="xs3 md2" color="#2ecc71" :block="true" v-on:clicked="execute('BUY')"></medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_BUY_AMOUNT'] = $event"></stockSymbol>
-      <dollarAmount v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></dollarAmount>
-      <dollarAmount v-on:change="amount['SET_BUY_TRIGGER'] = parseFloat($event)"></dollarAmount>
+      <stockAmount size="md4 xs3" v-on:change="amount['SET_BUY_AMOUNT'] = parseFloat($event)"></stockAmount>
+      <dollarAmount size="md4 xs3" v-on:change="amount['SET_BUY_TRIGGER'] = parseFloat($event)"></dollarAmount>
       <medButton
         msg="BUY TRIGGER"
-        size="sm3"
+        size="xs3 md2"
         color="#2ecc71"
         :block="true"
         v-on:clicked="execute('SET_BUY_AMOUNT')"
@@ -22,23 +22,23 @@
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SELL'] = $event"></stockSymbol>
-      <stockAmount v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
-      <medButton msg="SELL" size="sm3" color="#2ecc71" :block="true" v-on:clicked="execute('SELL')"></medButton>
+      <stockAmount size="md8 xs6" v-on:change="amount['SELL'] = parseInt($event)"></stockAmount>
+      <medButton msg="SELL" size="xs3 md2" color="#2ecc71" :block="true" v-on:clicked="execute('SELL')"></medButton>
     </v-layout>
     <v-layout align-self-start row class="option">
       <stockSymbol v-on:change="stock['SET_SELL_AMOUNT'] = $event"></stockSymbol>
-      <stockAmount v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
-      <dollarAmount v-on:change="amount['SET_SELL_TRIGGER'] = parseFloat($event)"></dollarAmount>
+      <stockAmount size="md4 xs3" v-on:change="amount['SET_SELL_AMOUNT'] = parseInt($event)"></stockAmount>
+      <dollarAmount size="md4 xs3" v-on:change="amount['SET_SELL_TRIGGER'] = parseFloat($event)"></dollarAmount>
       <medButton
         msg="SELL TRIGGER"
-        size="sm3"
+        size="xs3 md2"
         color="#2ecc71"
         :block="true"
         v-on:clicked="execute('SET_SELL_AMOUNT')"
       ></medButton>
     </v-layout>
-    <v-layout class="option">
-      <medButton msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
+    <v-layout row class="option">
+      <medButton size="xs12" msg="Logout" to="/" color="#eb4d4b" :block="true"></medButton>
     </v-layout>
   </v-container>
 </template>
@@ -174,12 +174,24 @@ export default {
 </script>
 
 <style>
-#home {
-  padding: 10%;
+@media only screen and (min-width: 1264px) {
+  .home {
+    max-width: 1264px;
+  }
 }
 
 h1 {
   color: #95afc0;
   font-family: "Courier New", Courier, monospace;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
 }
 </style>

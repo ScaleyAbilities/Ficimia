@@ -1,14 +1,15 @@
 <template>
-  <v-flex grow pl-1 pr-1>
+  <v-flex :class="size" mx-1>
     <v-text-field 
-        v-model="dollar"
-        label="Amount" 
-        placeholder="10.00"
-        outline
-        :dark="true"
-        type="number"
-        :clearable="true"
-        v-on:change="$emit('change', dollar)"
+      v-model="dollar"
+      label="Amount" 
+      placeholder="10.00"
+      outline
+      :dark="true"
+      color="white"
+      type="text"
+      :clearable="true"
+      v-on:change="$emit('change', dollar)"
     ></v-text-field>
   </v-flex>
 </template>
@@ -16,9 +17,12 @@
 <script>
 export default {
   name: "dollarAmount",
+  props: {
+    size: String,
+  },
   data() {
     return {
-      dollar: String,
+      dollar: '',
     }
   }
 };

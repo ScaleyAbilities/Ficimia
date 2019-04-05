@@ -1,10 +1,12 @@
 <template>
-  <v-flex grow pl-1 pr-1>
+  <v-flex :class="size" mx-1>
     <v-text-field 
         v-model="amount"
         label="Stock Amount" 
         placeholder="10"
         type="number"
+        min="0"
+        color="white"
         :clearable="true"
         outline
         :dark="true"
@@ -16,9 +18,12 @@
 <script>
 export default {
   name: "stockAmount",
+  props: {
+    size: String,
+  },
   data() {
     return {
-      amount: String,
+      amount: '',
     }
   }
 };
@@ -26,5 +31,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  
 </style>

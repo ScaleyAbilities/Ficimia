@@ -1,6 +1,6 @@
 <template>
-  <v-flex pl-1 pr-1 ma-0 :class="size" id="medButton">
-    <v-btn pa-0
+  <v-flex :class="size" mx-1 id="medButton">
+    <v-btn class="button"
       :dark="true"
       :large="true"
       :outline="true"
@@ -29,5 +29,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .button {
+    height: 58px;
+    margin: 0;
+  }
 </style>
