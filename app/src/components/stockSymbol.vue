@@ -7,7 +7,7 @@
       :dark="true"
       color="white"
       mask="AAA"
-      placeholder="SUC"
+      placeholder="SNK"
       :clearable="true"
       @input="$emit('change', stockSym)"
       @clear="$emit('change', stockSym)"

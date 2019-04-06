@@ -3,7 +3,7 @@
     <v-text-field
       v-model="amount"
       label="Stock Amount"
-      placeholder="69"
+      placeholder="10"
       type="number"
       min="1"
       color="white"

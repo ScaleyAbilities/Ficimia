@@ -4,12 +4,12 @@
       <v-card>
         <v-card-title class="headline">{{command}}</v-card-title>
         <v-card-text>
+          <p>{{msg}}</p>
           <div v-if="stocks">
-            <li  v-for="(amount, stock) of stocks">
-              Stock: {{stock}} Amount: {{amount}}
-            </li>
+            <div v-for="(amount, stock) of stocks" :key="stock.id">
+              <strong>{{stock}}</strong>: {{amount}}
+            </div>
           </div>
-          <p v-else>{{msg}}</p>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -33,7 +33,7 @@ export default {
     cancel: { default: true, type: Boolean },
     confirm: { default: true, type: Boolean },
     command: String,
-    stocks: Array,
+    stocks: Object,
     msg: String,
     dialog: { default: false, type: Boolean }
   }

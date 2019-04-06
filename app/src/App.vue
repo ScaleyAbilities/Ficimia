@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <marquee-text :repeat="30" :duration="3">
-      <div class="heading">~ SCALEY ABILITIES ~</div>
+      <div class="heading">&nbsp;🐍 SCALEY ABILITIES</div>
     </marquee-text>
     <router-view/>
   </div>
@@ -46,7 +46,7 @@ export default {
 
 .heading {
   display: flex;
-  color: green;
+  color: #ddd;
   justify-content: center;
   font-family: fantasy;
   font-size: 4em;

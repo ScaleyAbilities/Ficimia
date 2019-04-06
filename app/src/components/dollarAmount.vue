@@ -4,13 +4,13 @@
       v-model="dollar"
       :label="custLabel ? custLabel : 'Dollar Amount'"
       :readonly="readonly"
-      :placeholder="placeholder ? placeholder : '420.00'"
+      :placeholder="placeholder ? placeholder : '100.00'"
       min="0"
       outline
       :dark="true"
       color="white"
       type="number"
-      :clearable="true"
+      :clearable="clearable"
       @input="$emit('change', dollar)"
       @clear="$emit('change', dollar)"
     ></v-text-field>
@@ -24,14 +24,16 @@ export default {
     size: String,
     custLabel: String,
     placeholder: String,
+    dollar: String,
+    clearable: {default: true, type: Boolean},
     readonly: {default: false, type: Boolean},
   },
 
-  data() {
-    return {
-      dollar: ""
-    };
-  }
+  // data() {
+  //   return {
+  //     dollar: ""
+  //   };
+  // },
 };
 </script>
 
